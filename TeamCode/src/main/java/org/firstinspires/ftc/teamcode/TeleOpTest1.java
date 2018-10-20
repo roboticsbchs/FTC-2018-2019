@@ -11,62 +11,80 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="TeleOpTest1", group="TeleOp")
 public class TeleOpTest1 extends OpMode {
 
-    private DcMotor leftSideDrive = null;
-    private DcMotor rightSideDrive = null;
-    private Servo   baseArm = null;
-    private Servo   midArm = null;
+    private DcMotor leftFrontDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor leftRearDrive = null;
+    private DcMotor rightRearDrive = null;
+
+    private Servo   testServo = null;
+
+    double testServoPosition = 0;
+
+    static final double MAX1 = 1;
+    static final double MIN1 = 0;
+
+    // Yes
+
+    /*
     private DcMotor sweeper = null;
-    private Servo   claw = null;
+    */
 
     @Override
     public void init() {
-        leftSideDrive = hardwareMap.get(DcMotor.class, "left_motor");
-        rightSideDrive = hardwareMap.get(DcMotor.class, "rigth_motor");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_motor");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_motor");
+        leftRearDrive = hardwareMap.get(DcMotor.class, "left_rear_motor");
+        rightRearDrive = hardwareMap.get(DcMotor.class, "right_rear_motor");
 
-        leftSideDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightSideDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftRearDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightRearDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        baseArm = hardwareMap.get(Servo.class, "base_arm");
-        midArm = hardwareMap.get(Servo.class, "mid_arm");
+        testServo = hardwareMap.get(Servo.class, "test_servo");
+
+        /*
         sweeper = hardwareMap.get(DcMotor.class, "sweeper");
         sweeper.setDirection(DcMotor.Direction.FORWARD);
-        claw = hardwareMap.get(Servo.class, "claw");
+        */
     }
 
     @Override
     public void loop() {
-        double leftPower;
-        double rightPower;
+        double leftFrontPower;
+        double rightFrontPower;
+        double leftRearPower;
+        double rightRearPower;
 
         double drive    = -gamepad1.left_stick_y;
         double turn     = gamepad1.right_stick_x;
+        double strafe   = gamepad1.left_stick_x;
 
-        leftPower = Range.clip(drive + turn, -1.0, 1.0);
-        rightPower = Range.clip(drive - turn, -1.0, 1.0);
+        leftFrontPower = Range.clip(drive + turn - strafe, -1.0, 1.0);
+        rightFrontPower = Range.clip(drive - turn + strafe, -1.0, 1.0);
+        leftRearPower = Range.clip(drive + turn + strafe, -1.0, 1.0);
+        rightRearPower = Range.clip(drive - turn - strafe, -1.0, 1.0);
 
-        leftSideDrive.setPower(leftPower);
-        rightSideDrive.setPower(rightPower);
+        leftFrontDrive.setPower(leftFrontPower);
+        rightFrontDrive.setPower(rightFrontPower);
+        leftRearDrive.setPower(leftRearPower);
+        rightRearDrive.setPower(rightRearPower);
 
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Motors", "leftFront (%.2f), rightFront (%.2f), leftRear (%.2f), rightRear (%.2f)", leftFrontPower, rightFrontPower, leftRearPower, rightRearPower);
 
-        double baseArmPosition  =0;
-        double midArmPosition   =0;
+        if(testServoPosition < MAX1)
+            testServoPosition += gamepad2.right_trigger/4;
+        if(testServoPosition > MIN1)
+            testServoPosition -= gamepad2.left_trigger/4;
+
+        testServo.setPosition(testServoPosition);
+
+        telemetry.addData("Servo", "Position (%.2f)", testServoPosition);
+
+        /*
         double sweepPower   = gamepad2.right_trigger - gamepad2.left_trigger;
-
-        baseArmPosition += gamepad2.left_stick_y;
-        midArmPosition  += 2*gamepad2.left_stick_y;
-
-        baseArmPosition += gamepad2.right_stick_y;
-        midArmPosition  += gamepad2.right_stick_y;
-
-        baseArm.setPosition(baseArmPosition);
-        midArm.setPosition(midArmPosition);
         sweeper.setPower(sweepPower);
-
-        if (gamepad2.a)
-            claw.setPosition(.5);
-        if (gamepad2.b)
-            claw.setPosition(0);
+        */
     }
 
     @Override
