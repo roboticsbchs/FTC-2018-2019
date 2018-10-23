@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //@Disabled
-@Autonomous(name="AutonomousTest1Encoder", group="Autonomous")
-public class AutonomousTest1Encoder extends LinearOpMode {
+@Autonomous(name="AutonomousTestEncoder90deg", group="Autonomous")
+public class AutonomousTestEncoder90deg extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -61,11 +61,7 @@ public class AutonomousTest1Encoder extends LinearOpMode {
 
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED, 5, 5, 1.0);   // Forward 5 Inches with 2 Second timeout
-        encoderDrive(TURN_SPEED, -7.85, 7.85, 1.5);   // Turn Left 7.85 Inches with 1 Second timeout
-        encoderDrive(DRIVE_SPEED, 36, 36, 8.0); // Forward 36 Inches with 5 Second timeout
         encoderDrive(TURN_SPEED, 15.7, -15.7, 3); // Turn Right 15.7 Inches with 2 Second timeout
-        encoderDrive(DRIVE_SPEED, 36, 36, 8.0); // Forward 36 Inches with 5 Second timeout
     }
 
     public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {

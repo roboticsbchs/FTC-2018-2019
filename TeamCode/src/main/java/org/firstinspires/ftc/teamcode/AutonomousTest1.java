@@ -36,30 +36,27 @@ public class AutonomousTest1 extends LinearOpMode {
         waitForStart();
 
         //turn -45deg
-        rightFrontDrive.setPower(.45);
-        rightRearDrive.setPower(.45);
+        rightFrontDrive.setPower(.85);
+        rightRearDrive.setPower(.85);
         sleep(500);
 
         //forward 1.5 tiles
-        leftFrontDrive.setPower(.45);
-        leftRearDrive.setPower(.45);
-        sleep(1500);
+        leftFrontDrive.setPower(.6);
+        leftRearDrive.setPower(.6);
+        sleep(1000);
 
         //turn 90deg
+        leftFrontDrive.setPower(.85);
+        leftRearDrive.setPower(.85);
         rightFrontDrive.setPower(0);
         rightRearDrive.setPower(0);
         sleep(1000);
 
         //forward 1.5 tiles
-        rightFrontDrive.setPower(.45);
-        rightRearDrive.setPower(.45);
-        sleep(1500);
-
-        //backwards .5 tile
-        leftFrontDrive.setPower(-.45);
-        rightFrontDrive.setPower(-.45);
-        leftRearDrive.setPower(-.45);
-        rightRearDrive.setPower(-.45);
-        sleep(500);
+        leftFrontDrive.setPower(.6);
+        leftRearDrive.setPower(.6);
+        rightFrontDrive.setPower(.6);
+        rightRearDrive.setPower(.6);
+        sleep(1000);
     }
 }
