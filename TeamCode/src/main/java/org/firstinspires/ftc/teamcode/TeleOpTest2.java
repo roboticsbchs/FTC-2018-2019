@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 //@Disabled
-@TeleOp(name="TeleOpTest1", group="TeleOp")
-public class TeleOpTest1 extends OpMode {
+@TeleOp(name="TeleOpTest2", group="TeleOp")
+public class TeleOpTest2 extends OpMode {
 
     private DcMotor leftFrontDrive  = null;
     private DcMotor rightFrontDrive = null;
@@ -21,6 +19,8 @@ public class TeleOpTest1 extends OpMode {
     double drive;
 
     private CRServo contServo   = null;
+
+    double contServoPower;
 
     /*
     private Servo   testServo   = null;
@@ -53,6 +53,9 @@ public class TeleOpTest1 extends OpMode {
 
         contServo = hardwareMap.get(CRServo.class, "cont_servo");
 
+        contServoPower = contServo.getPower();
+        contServo.setPower(contServoPower);
+
         /*
         testServo = hardwareMap.get(Servo.class, "test_servo");
         sweeper = hardwareMap.get(DcMotor.class, "sweeper");
@@ -71,10 +74,10 @@ public class TeleOpTest1 extends OpMode {
         double strafe   = gamepad1.left_stick_x;
         double drive    = gamepad1.left_stick_y;
 
-        leftFrontPower = Range.clip(drive + turn + strafe, -1.0, 1.0);
-        rightFrontPower = Range.clip((drive - turn) - strafe, -1.0, 1.0);
-        leftRearPower = Range.clip(drive + turn - strafe, -1.0, 1.0);
-        rightRearPower = Range.clip((drive - turn) + strafe, -1.0, 1.0);
+        leftFrontPower = drive + turn + strafe;
+        rightFrontPower = (drive - turn) - strafe;
+        leftRearPower = drive + turn - strafe;
+        rightRearPower = (drive - turn) + strafe;
 
         leftFrontDrive.setPower(leftFrontPower);
         rightFrontDrive.setPower(rightFrontPower);
@@ -87,6 +90,9 @@ public class TeleOpTest1 extends OpMode {
                 leftRearDrive.getPower(),
                 rightRearDrive.getPower());
 
+        contServo.setPower(contServoPower);
+        telemetry.addData("ContServo", "Moving (%.2f)", contServo.getPower());
+
         /*
         if(testServoPosition < MAX1)
             testServoPosition += gamepad2.right_trigger/4;
@@ -95,12 +101,7 @@ public class TeleOpTest1 extends OpMode {
 
         testServo.setPosition(testServoPosition);
         telemetry.addData("Servo", "Position (%.2f)", testServo.getPosition());
-        */
 
-        contServo.setPower(-gamepad2.left_stick_y);
-        telemetry.addData("ContServo", "Moving (%.2f)", contServo.getPower());
-
-        /*
         double sweepPower = gamepad2.right_trigger - gamepad2.left_trigger;
         sweeper.setPower(sweepPower);
         telemetry.addData("Sweep", "Speed", sweeper.getPower());
